@@ -8,10 +8,12 @@ class CellView {
 
   #state;
 
+  #usetag;
+
   constructor(value) {
     this.#value = value;
+    this.#state = CellState.Covered;
     this.#ui = this.#createDOMElements();
-    this.#cover = CellState.Covered;
   }
 
   get value() {
@@ -22,23 +24,22 @@ class CellView {
     return this.#ui;
   }
 
+  #flagged = () => {
+    this.#state = CellState.Flagged;
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#prefix__j`);
+  }
+
   #uncover = () => {
     this.#ui.classList.remove('cell-covered');
+    this.#state = CellState.Uncovered;
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.#getimgpath());
   }
 
   #cover = () => {
     this.#ui.classList.add('cell-covered');
   }
 
-  #createDOMElements = () => {
-    const div = document.createElement('div');
-    div.setAttribute('class', 'cell-covered');
-    div.addEventListener('click', this.#uncover);
-
-    const svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const useTag = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    useTag.setAttribute('class', 'board-cell');
-
+  #getimgpath = () => {
     let sprite = '';
     switch (this.#value) {
       case 1:
@@ -83,9 +84,37 @@ class CellView {
         break;
     }
 
-    useTag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', sprite);
+    return sprite;
+  }
+
+  #createDOMElements = () => {
+    const div = document.createElement('div');
+    div.setAttribute('class', 'cell-covered');
+    div.addEventListener('click', this.#uncover);
+    div.addEventListener('contextmenu', this.#flagged);
+    const svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.#usetag = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    this.#usetag.setAttribute('class', 'board-cell');
+    let sprite = '';
+    switch (this.#state) {
+      case CellState.Covered:
+        sprite = `${icons}#prefix__k`;
+        break;
+
+      case CellState.Uncovered:
+        sprite = this.#getimgpath();
+        break;
+
+      case CellState.Flagged:
+        sprite = `${icons}#prefix__j`;
+        break;
+
+      default:
+    }
+
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', sprite);
     div.appendChild(svgTag);
-    svgTag.appendChild(useTag);
+    svgTag.appendChild(this.#usetag);
 
     return div;
   }

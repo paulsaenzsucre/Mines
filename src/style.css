@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  background: chartreuse;
-}
-
 svg {
   width: 512px;
   height: 512px;
@@ -18,7 +14,5 @@ svg {
 }
 
 .cell-covered {
-  box-shadow: inset 1px 1px #ffffff, inset -1px -1px #0a0a0a,
-    inset 2px 2px #dfdfdf, inset -2px -2px #808080;
-  /* z-index: 10; */
+  box-shadow: inset 1px 1px #fff, inset -1px -1px #0a0a0a, inset 2px 2px #dfdfdf, inset -2px -2px #808080;
 }
