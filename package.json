@@ -1,10 +1,11 @@
 {
-  "name": "mv-mintodolist",
-  "version": "1.0.0",
-  "description": "A simple HTML list of To Do tasks.",
+  "name": "mines",
+  "version": "0.1.0",
+  "description": "Mines is a clone of the classic Microsoft Windows Minesweeper game.",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint . && npx stylelint \"**/*.{css,scss}\" && npx hint .",
     "start": "webpack serve --open",
     "restart": "webpack serve",
     "build": "webpack"
@@ -14,7 +15,7 @@
     "url": "git+https://github.com/luigirazum/mv-mintodolist.git"
   },
   "keywords": [],
-  "author": "Luis Zubia <soyzubia@gmail.com> (GH @luigirazum)",
+  "author": "Paul Sáenz & Pierre Barba",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/luigirazum/mv-mintodolist/issues"
@@ -37,8 +38,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "material-symbols": "^0.4.2"
-  },
-  "main": "webpack.config.js"
+    
+  }
 }
