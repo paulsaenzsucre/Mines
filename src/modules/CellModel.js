@@ -1,20 +1,19 @@
 class CellModel {
-  #position;
-
-  #value;
+  #mineCount;
 
   #state;
 
-  constructor(posX, posY, value) {
-    this.#position = {
-      x: posX,
-      y: posY,
-    };
-    this.#value = value;
+  constructor(mineCount, state) {
+    this.#mineCount = mineCount;
+    this.#state = state;
   }
 
-  get value() {
-    return this.#value;
+  static get MINE_VALUE() {
+    return 9;
+  }
+
+  get mineCount() {
+    return this.#mineCount;
   }
 
   get state() {
@@ -22,7 +21,15 @@ class CellModel {
   }
 
   set state(newState) {
-    this.#value = newState;
+    this.#state = newState;
+  }
+
+  layMine = () => {
+    this.#mineCount = CellModel.MINE_VALUE;
+  }
+
+  mineCountUp = () => {
+    this.#mineCount += 1;
   }
 }
 export default CellModel;
