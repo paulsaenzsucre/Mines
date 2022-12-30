@@ -9,6 +9,6 @@
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
   aspect-ratio: 1;
-  width: 100vh;
-  height: 100vh; 
+  width: 90vh;
+  height: 90vh; 
 }

@@ -10,6 +10,8 @@ class CellView {
 
   #usetag;
 
+  #svgTag;
+
   constructor(value) {
     this.#value = value;
     this.#state = CellState.Covered;
@@ -24,99 +26,53 @@ class CellView {
     return this.#ui;
   }
 
-  #flagged = () => {
+  #flagged = (evt) => {
+    evt.preventDefault();
     this.#state = CellState.Flagged;
-    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#prefix__j`);
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-flagged`);
   }
 
   #uncover = () => {
-    this.#ui.classList.remove('cell-covered');
     this.#state = CellState.Uncovered;
-    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.#getimgpath());
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#value-${this.#value}`);
+    this.#svgTag.removeEventListener('click', this.#uncover);
+    this.#svgTag.removeEventListener('contextmenu', this.#flagged);
   }
 
-  #cover = () => {
-    this.#ui.classList.add('cell-covered');
-  }
-
-  #getimgpath = () => {
-    let sprite = '';
-    switch (this.#value) {
-      case 1:
-        sprite = `${icons}#prefix__a`;
-        break;
-
-      case 2:
-        sprite = `${icons}#prefix__b`;
-        break;
-
-      case 3:
-        sprite = `${icons}#prefix__c`;
-        break;
-
-      case 4:
-        sprite = `${icons}#prefix__d`;
-        break;
-
-      case 5:
-        sprite = `${icons}#prefix__e`;
-        break;
-
-      case 6:
-        sprite = `${icons}#prefix__f`;
-        break;
-
-      case 7:
-        sprite = `${icons}#prefix__g`;
-        break;
-
-      case 8:
-        sprite = `${icons}#prefix__h`;
-        break;
-
-      case 9:
-        sprite = `${icons}#prefix__i`;
-        break;
-
-      default:
-      case 0:
-        sprite = `${icons}#prefix__k`;
-        break;
-    }
-
-    return sprite;
+  #covered = () => {
+    this.#state = CellState.Flagged;
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-covered`);
   }
 
   #createDOMElements = () => {
-    const div = document.createElement('div');
-    div.setAttribute('class', 'cell-covered');
-    div.addEventListener('click', this.#uncover);
-    div.addEventListener('contextmenu', this.#flagged);
-    const svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.#svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.#svgTag.setAttributeNS(null, 'viewBox', '0 0 512 512');
+    this.#svgTag.addEventListener('click', this.#uncover);
+    this.#svgTag.addEventListener('contextmenu', this.#flagged);
     this.#usetag = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    this.#usetag.setAttribute('class', 'board-cell');
     let sprite = '';
+
     switch (this.#state) {
       case CellState.Covered:
-        sprite = `${icons}#prefix__k`;
+        sprite = `${icons}#state-covered`;
         break;
 
       case CellState.Uncovered:
-        sprite = this.#getimgpath();
+        sprite = `${icons}#value-${this.#value}`;
         break;
 
       case CellState.Flagged:
-        sprite = `${icons}#prefix__j`;
+        sprite = `${icons}#state-flagged`;
         break;
 
       default:
     }
 
     this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', sprite);
-    div.appendChild(svgTag);
-    svgTag.appendChild(this.#usetag);
+    // div.appendChild(svgTag);
+    this.#svgTag.appendChild(this.#usetag);
 
-    return div;
+    return this.#svgTag;
   }
 }
 export default CellView;
