@@ -46,5 +46,9 @@ class CellPresenter {
       this.#view.cover();
     }
   }
+
+  get state() {
+    return this.#model.state;
+  }
 }
 export default CellPresenter;

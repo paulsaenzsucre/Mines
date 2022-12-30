@@ -2,74 +2,67 @@ import CellState from './CellState.js';
 import icons from '../images/icons.min.svg';
 
 class CellView {
+  #presenter;
+
   #ui;
-
-  #value;
-
-  #state;
 
   #usetag;
 
   #svgTag;
 
-  constructor(value) {
-    this.#value = value;
-    this.#state = CellState.Covered;
+  constructor(cellPresenter) {
+    this.#presenter = cellPresenter;
     this.#ui = this.#createDOMElements();
-  }
-
-  get value() {
-    return this.#value;
   }
 
   get ui() {
     return this.#ui;
   }
 
-  #flagged = (evt) => {
-    evt.preventDefault();
-    this.#state = CellState.Flagged;
+  flag = () => {
     this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-flagged`);
   }
 
-  #uncover = () => {
-    this.#state = CellState.Uncovered;
-    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#value-${this.#value}`);
-    this.#svgTag.removeEventListener('click', this.#uncover);
-    this.#svgTag.removeEventListener('contextmenu', this.#flagged);
+  /**
+   * @param {number} mineCount
+   */
+  uncover = (mineCount) => {
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#value-${mineCount}`);
   }
 
-  #covered = () => {
-    this.#state = CellState.Flagged;
+  cover = () => {
     this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-covered`);
+  }
+
+  suspect = () => {
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-suspected`);
   }
 
   #createDOMElements = () => {
     this.#svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.#svgTag.setAttributeNS(null, 'viewBox', '0 0 512 512');
-    this.#svgTag.addEventListener('click', this.#uncover);
-    this.#svgTag.addEventListener('contextmenu', this.#flagged);
+    this.#svgTag.addEventListener('click', this.#presenter.clickListener);
+    this.#svgTag.addEventListener('contextmenu', this.#presenter.rightClickListener);
     this.#usetag = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    let sprite = '';
 
-    switch (this.#state) {
-      case CellState.Covered:
-        sprite = `${icons}#state-covered`;
+    switch (this.#presenter.state) {
+      case CellState.Suspected:
+        this.suspect();
         break;
 
       case CellState.Uncovered:
-        sprite = `${icons}#value-${this.#value}`;
+        this.uncover();
         break;
 
       case CellState.Flagged:
-        sprite = `${icons}#state-flagged`;
+        this.flag();
         break;
 
+      case CellState.Covered:
       default:
+        this.cover();
+        break;
     }
-
-    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', sprite);
-    // div.appendChild(svgTag);
     this.#svgTag.appendChild(this.#usetag);
 
     return this.#svgTag;
