@@ -7,6 +7,8 @@ class CellState {
 
   static Uncovered = new CellState('Uncovered');
 
+  static Exploted = new CellState('Exploded');
+
   constructor(name) {
     this.name = name;
   }

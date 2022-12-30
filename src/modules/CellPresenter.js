@@ -7,15 +7,15 @@ class CellPresenter {
 
   #view;
 
-  constructor(value, state) {
-    this.#model = new CellModel(value, state);
+  constructor(mineCount, state) {
+    this.#model = new CellModel(mineCount, state);
     this.#view = new CellView(this);
   }
 
   clickListener = (evt) => {
     evt.preventDefault();
 
-    if (this.#model.value === CellModel.Mine) {
+    if (this.#model.mineCount === CellModel.MINE_VALUE) {
       this.#model.state(CellState.Exploded);
       this.#view.explode();
 
