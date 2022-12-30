@@ -105,3 +105,4 @@ dist
 
 # Docs file
 docs/
+.vscode/
