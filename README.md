@@ -1,11 +1,10 @@
 <a name="readme-top"></a>
 
 <div align="center">
-
-  <svg width="64" height="64" viewBox="0 0 512 512"><use xlink:href="https://elafildecolor.github.io/Mines/86e4a7c6767ae3840955.svg#state-exploded"></use></svg>
+<img style="width: 64px; height: 64px" src="./src/images/mines-icon.png" />
   <br/>
 
-  <h3><b>MINES</b></h3>
+  <h1><b>MINES</b></h1>
 
 </div>
 
