@@ -1,13 +1,14 @@
 import './style.css';
-import CellView from './modules/CellView.js';
+import CellPresenter from './modules/CellPresenter.js';
+import CellState from './modules/CellState.js';
 
 const container = document.getElementById('cont');
 
-let cell;
+let cellPresenter;
 
 for (let i = 0; i < 9; i += 1) {
   for (let j = 0; j < 9; j += 1) {
-    cell = new CellView(j);
-    container.appendChild(cell.ui);
+    cellPresenter = new CellPresenter(Math.round(Math.random() * 10), CellState.Covered);
+    container.appendChild(cellPresenter.view.ui);
   }
 }
