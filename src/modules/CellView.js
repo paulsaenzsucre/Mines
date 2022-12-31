@@ -38,6 +38,10 @@ class CellView {
     this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-suspected`);
   }
 
+  explode = () => {
+    this.#usetag.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${icons}#state-exploded`);
+  }
+
   #createDOMElements = () => {
     this.#svgTag = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.#svgTag.setAttributeNS(null, 'viewBox', '0 0 512 512');
